@@ -1,42 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Smart Staking BNB Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Smart Staking BNB - Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Chart.js para las gráficas -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Web3.js: MUY IMPORTANTE que esté antes de app.js -->
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.8.2/dist/web3.min.js"></script>
 </head>
 <body>
-  <header>Smart Staking BNB Dashboard</header>
-
   <div class="dashboard">
-    <div class="card"><h3>Total BNB Staked</h3><p id="totalStaked">Loading...</p></div>
-    <div class="card"><h3>Dividend Pool</h3><p id="totalTreasury">Loading...</p></div>
-    <div class="card"><h3>Your Staked BNB</h3><p id="userStaked">Loading...</p></div>
-    <div class="card"><h3>Your Pending Rewards</h3><p id="pendingRewards">Loading...</p></div>
-    <div class="card"><h3>Daily Dividend Estimate</h3><p id="dailyEstimate">Loading...</p></div>
-    <div class="card"><h3>Users with Deposits</h3><p id="activeUsers">Loading...</p></div>
-    <div class="card"><h3>Next Reward Distribution</h3><p id="nextDistribution">Loading...</p></div>
+    <h1>Smart Staking BNB</h1>
+
+    <div class="section">
+      <h2>Estadísticas Globales</h2>
+      <p>Total Staked: <span id="totalStaked">...</span></p>
+      <p>Total en Tesorería: <span id="totalTreasury">...</span></p>
+      <p>Usuarios Activos: <span id="activeUsers">...</span></p>
+      <p>Siguiente Reparto en: <span id="nextDistribution">...</span></p>
+    </div>
+
+    <div class="section">
+      <h2>Tus Datos</h2>
+      <p>Staked Personal: <span id="userStaked">...</span></p>
+      <p>Dividendos Pendientes: <span id="pendingRewards">...</span></p>
+      <p>Estimación de Dividendos Diarios: <span id="dailyEstimate">...</span></p>
+    </div>
+
+    <div class="section">
+      <h2>Acciones</h2>
+      <input type="number" id="stakeAmount" placeholder="Cantidad de BNB a depositar">
+      <button onclick="stakeBNB()">Depositar</button>
+      <button onclick="withdrawStake()">Retirar Staking</button>
+      <button onclick="withdrawRewards()">Reclamar Recompensas</button>
+    </div>
+
+    <div class="section">
+      <h2>Gráficas</h2>
+      <canvas id="treasuryChart" width="400" height="150"></canvas>
+      <canvas id="dividendChart" width="400" height="150"></canvas>
+    </div>
   </div>
 
-  <div class="actions">
-    <input type="number" id="stakeAmount" placeholder="Amount to stake (BNB)" />
-    <br>
-    <button onclick="stakeBNB()">Deposit</button>
-
-    <input type="number" id="withdrawAmount" placeholder="Amount to withdraw (BNB)" />
-    <br>
-    <button onclick="withdrawStake()">Withdraw Stake</button>
-    <button onclick="withdrawRewards()">Claim Rewards</button>
-  </div>
-
-  <div class="dashboard">
-    <div class="card"><h3>Treasury Pool Evolution</h3><canvas id="treasuryChart" height="200"></canvas></div>
-    <div class="card"><h3>Dividend Pool Evolution</h3><canvas id="dividendChart" height="200"></canvas></div>
-  </div>
-
+  <!-- Tu script de conexión e interacción -->
   <script src="app.js"></script>
 </body>
 </html>

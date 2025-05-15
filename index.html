@@ -2,47 +2,46 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Smart Staking BNB - Testnet BSC</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Staking BNB</title>
+  <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <header>
-    <h1>Smart Staking BNB</h1>
+    <h1>Smart Staking <span>BNB</span></h1>
     <button id="connectWallet">Conectar Wallet</button>
   </header>
-
   <main>
-    <section id="stakeSection" class="card">
+    <section class="card stake-section">
       <h2>Stakea BNB</h2>
-      <input id="stakeAmount" type="number" placeholder="Cantidad a stakear (BNB)" min="0" step="0.0001" />
-      <button id="stakeButton">Stake</button>
-      <button id="withdrawStakeButton">Retirar Stake</button>
-      <button id="withdrawRewardsButton">Retirar Recompensas</button>
+      <input type="number" id="stakeAmount" placeholder="Cantidad a stakear (BNB)" />
+      <button id="stakeButton" class="stake">Stake</button>
+      <button id="withdrawStakeButton" class="withdraw">Retirar Stake</button>
+      <button id="withdrawRewardsButton" class="claim">Retirar Recompensas</button>
     </section>
 
-    <section id="globalStats" class="card">
+    <section class="card global-stats">
       <h2>Estadísticas Globales</h2>
-      <div><strong>Total Stakeado:</strong> <span id="totalStaked">Cargando...</span></div>
-      <div><strong>Pool Tesoro:</strong> <span id="totalTreasury">Cargando...</span></div>
-      <div><strong>Dividendos Diarios Totales:</strong> <span id="totalDailyDividend">Cargando...</span></div>
-      <div><strong>Usuarios con Stake:</strong> <span id="totalUsers">Cargando...</span></div>
+      <p><strong>Total Stakeado:</strong> <span id="totalStaked">0</span></p>
+      <p><strong>Pool Tesoro:</strong> <span id="totalTreasury">0</span></p>
+      <p><strong>Dividendos Diarios Totales:</strong> <span id="totalDailyDividend">0</span></p>
+      <p><strong>Usuarios con Stake:</strong> <span id="totalUsers">0</span></p>
     </section>
 
-    <section id="userStats" class="card">
+    <section class="card user-stats">
       <h2>Tu Participación</h2>
-      <div><strong>% Participación:</strong> <span id="userShare">Cargando...</span></div>
-      <div><strong>BNB Stakeado:</strong> <span id="userStaked">Cargando...</span></div>
-      <div><strong>Recompensas Pendientes:</strong> <span id="pendingRewards">Cargando...</span></div>
-      <div><strong>Estimado Diario:</strong> <span id="dailyEstimate">Cargando...</span></div>
-      <div><strong>Próxima Distribución en:</strong> <span id="nextDistribution">Cargando...</span></div>
+      <p><strong>% Participación:</strong> <span id="userShare">0</span> %</p>
+      <p><strong>BNB Stakeado:</strong> <span id="userStaked">0</span></p>
+      <p><strong>Recompensas Pendientes:</strong> <span id="pendingRewards">0</span></p>
+      <p><strong>Estimado Diario:</strong> <span id="dailyEstimate">0</span></p>
+      <p><strong>Próxima Distribución en:</strong> <span id="nextDistribution">-</span></p>
     </section>
 
-    <section id="chartSection" class="card">
+    <section class="card chart-section">
       <h2>Histórico Dividendos Diarios</h2>
-      <canvas id="bnbChart" width="400" height="200"></canvas>
+      <canvas id="bnbChart"></canvas>
     </section>
   </main>
 

@@ -106,23 +106,21 @@ async function connectWallet() {
 }
 
 async function refreshAllData() {
-  if(!contract) return;
+  if (!contract) return;
   try {
     // Global
     const totalStaked = await contract.methods.totalStaked().call();
     const totalTreasury = await contract.methods.totalTreasury().call();
     const totalDailyDividend = await contract.methods.getTotalDailyDividend().call();
-    const stakers = await contract.methods.stakers().call();
 
     totalStakedEl.textContent = formatBNB(totalStaked);
     totalTreasuryEl.textContent = formatBNB(totalTreasury);
     totalDailyDividendEl.textContent = formatBNB(totalDailyDividend);
-    totalUsersEl.textContent = stakers.length;
+    totalUsersEl.textContent = "N/A"; // No se puede obtener sin una función específica
 
-    if(userAddress){
+    if (userAddress) {
       // User
       const userShare = await contract.methods.getUserShare(userAddress).call();
-      // Nota: El contrato no expone directamente cuánto BNB stakeó el usuario, se muestra N/A
       const pendingRewards = await contract.methods.getPendingRewards(userAddress).call();
       const dailyEstimate = await contract.methods.getUserDailyDividendEstimate(userAddress).call();
       const timeUntilNextDistribution = await contract.methods.getTimeUntilNextDistribution(userAddress).call();
@@ -134,10 +132,11 @@ async function refreshAllData() {
 
       startNextDistributionCountdown(timeUntilNextDistribution);
     }
-  } catch(err) {
+  } catch (err) {
     showError(err);
   }
 }
+
 
 let timerInterval;
 

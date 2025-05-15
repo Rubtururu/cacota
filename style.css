@@ -1,78 +1,136 @@
-body {
-  font-family: 'Inter', sans-serif;
-  margin: 0;
-  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-  color: #fff;
+:root {
+  --bg-light: #f5f7fa;
+  --bg-dark: #121212;
+  --text-light: #121212;
+  --text-dark: #f5f7fa;
+  --primary: #00bcd4;
+  --accent: #ffd700;
+  --card-bg-light: #ffffff;
+  --card-bg-dark: #1f1f1f;
 }
 
-header {
-  padding: 20px;
-  background-color: rgba(0, 0, 0, 0.5);
-  text-align: center;
-  font-size: 2em;
-  font-weight: 700;
-  letter-spacing: 1px;
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+  }
+
+  .dashboard {
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+  }
+
+  .section {
+    background-color: var(--card-bg-dark);
+    color: var(--text-dark);
+  }
+
+  input, button {
+    background-color: #2c2c2c;
+    color: white;
+    border: 1px solid #444;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  body {
+    background-color: var(--bg-light);
+    color: var(--text-light);
+  }
+
+  .dashboard {
+    background-color: var(--bg-light);
+    color: var(--text-light);
+  }
+
+  .section {
+    background-color: var(--card-bg-light);
+    color: var(--text-light);
+  }
+
+  input, button {
+    background-color: #f0f0f0;
+    color: black;
+    border: 1px solid #ccc;
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  transition: all 0.3s ease;
 }
 
 .dashboard {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 20px;
-  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-.card {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease;
-}
-
-.card:hover {
-  transform: scale(1.03);
-}
-
-.card h3 {
-  margin-top: 0;
-  color: #ffd700;
-}
-
-.card p {
-  font-size: 1.1em;
-}
-
-.actions {
+h1 {
   text-align: center;
-  margin: 20px;
+  color: var(--primary);
+  font-size: 2.5rem;
+}
+
+.section {
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.section:hover {
+  transform: scale(1.01);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+}
+
+.section h2 {
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.section p {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
 }
 
 input[type="number"] {
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
-  margin: 0 10px 10px;
-  width: 200px;
-  font-size: 1em;
+  width: 100%;
+  padding: 0.6rem;
+  margin-bottom: 0.8rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: box-shadow 0.2s ease;
+}
+
+input:focus {
+  outline: none;
+  box-shadow: 0 0 5px var(--primary);
 }
 
 button {
-  padding: 10px 20px;
-  margin: 10px;
-  background-color: #ffd700;
-  border: none;
-  border-radius: 10px;
-  font-weight: 600;
+  display: inline-block;
+  padding: 0.7rem 1.2rem;
+  margin: 0.3rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  border: none;
+  transition: background 0.3s ease, transform 0.1s ease;
 }
 
 button:hover {
-  background-color: #e6c200;
+  transform: scale(1.05);
+  background-color: var(--primary);
+  color: white;
 }
 
 canvas {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  padding: 20px;
+  max-width: 100%;
+  margin-top: 1rem;
 }

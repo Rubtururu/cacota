@@ -1,61 +1,89 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="es" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Smart Staking BNB</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="app.js" defer></script>
 </head>
-<body class="bg-gray-950 text-white transition duration-500">
-  <div class="min-h-screen p-6">
-    <header class="mb-8 flex justify-between items-center">
-      <h1 class="text-3xl font-bold text-blue-400 animate-pulse">Smart Staking BNB</h1>
-      <button id="connectWallet" class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 transition">Conectar Wallet</button>
+<body>
+  <div class="container">
+    <header>
+      <h1>Smart Staking BNB</h1>
+      <button id="connectWallet">Conectar Wallet</button>
     </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-      <div class="bg-gray-800 p-4 rounded-xl shadow-lg">
-        <h2 class="text-lg font-semibold">Total Staked</h2>
-        <p id="totalStaked" class="text-2xl mt-2">Loading...</p>
+    <!-- Formulario de Stake -->
+    <section class="fade-in-up">
+      <h2>Depositar BNB</h2>
+      <div class="actions">
+        <input id="stakeAmount" class="input-popup" type="number" min="0.001" step="0.001" placeholder="Cantidad en BNB" />
+        <button id="stakeButton">Hacer Stake</button>
       </div>
-      <div class="bg-gray-800 p-4 rounded-xl shadow-lg">
-        <h2 class="text-lg font-semibold">Treasury Pool</h2>
-        <p id="totalTreasury" class="text-2xl mt-2">Loading...</p>
-      </div>
-      <div class="bg-gray-800 p-4 rounded-xl shadow-lg">
-        <h2 class="text-lg font-semibold">Daily Dividends</h2>
-        <p id="dailyDividend" class="text-2xl mt-2">Loading...</p>
-      </div>
-    </div>
+    </section>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-      <div class="bg-gray-800 p-4 rounded-xl shadow-lg">
-        <h2 class="text-lg font-semibold">My Stake</h2>
-        <p id="myStake" class="text-2xl mt-2">Loading...</p>
-      </div>
-      <div class="bg-gray-800 p-4 rounded-xl shadow-lg">
-        <h2 class="text-lg font-semibold">My Rewards</h2>
-        <p id="myRewards" class="text-2xl mt-2">Loading...</p>
-      </div>
-      <div class="bg-gray-800 p-4 rounded-xl shadow-lg">
-        <h2 class="text-lg font-semibold">Next Payout In</h2>
-        <p id="nextPayout" class="text-2xl mt-2">Loading...</p>
-      </div>
-    </div>
+    <!-- Acciones de usuario -->
+    <section class="actions fade-in-up">
+      <button id="withdrawStakeButton">Retirar Stake</button>
+      <button id="withdrawRewardsButton">Retirar Recompensas</button>
+    </section>
 
-    <div class="flex flex-wrap justify-center gap-4 mb-10">
-      <button id="stakeBtn" class="bg-green-500 px-6 py-2 rounded hover:bg-green-600 transition">Hacer Stake</button>
-      <button id="withdrawBtn" class="bg-yellow-500 px-6 py-2 rounded hover:bg-yellow-600 transition">Retirar Stake</button>
-      <button id="claimBtn" class="bg-purple-500 px-6 py-2 rounded hover:bg-purple-600 transition">Reclamar Recompensas</button>
-    </div>
+    <!-- Estadísticas globales -->
+    <section class="stats-grid fade-in-up">
+      <div class="card">
+        <h3>Total BNB Staked</h3>
+        <p id="totalStaked">Loading...</p>
+      </div>
+      <div class="card">
+        <h3>Tesoro Total</h3>
+        <p id="totalTreasury">Loading...</p>
+      </div>
+      <div class="card">
+        <h3>Dividendos Diarios Globales</h3>
+        <p id="totalDailyDividend">Loading...</p>
+      </div>
+      <div class="card">
+        <h3>Usuarios con BNB</h3>
+        <p id="totalUsers">Loading...</p>
+      </div>
+    </section>
 
-    <div class="bg-gray-800 p-6 rounded-xl shadow-lg">
-      <h2 class="text-xl font-bold mb-4">Gráfico Pool de Dividendos</h2>
-      <canvas id="dividendChart" height="100"></canvas>
-    </div>
+    <!-- Estadísticas personales -->
+    <section class="stats-grid fade-in-up">
+      <div class="card">
+        <h3>Tu participación (%)</h3>
+        <p id="userShare">Loading...</p>
+      </div>
+      <div class="card">
+        <h3>Tus BNB Staked</h3>
+        <p id="userStaked">Loading...</p>
+      </div>
+      <div class="card">
+        <h3>Recompensas Pendientes</h3>
+        <p id="pendingRewards">Loading...</p>
+      </div>
+      <div class="card">
+        <h3>Dividendos Diarios Estimados</h3>
+        <p id="dailyEstimate">Loading...</p>
+      </div>
+      <div class="card">
+        <h3>Próxima Distribución</h3>
+        <p id="nextDistribution">Loading...</p>
+      </div>
+    </section>
+
+    <!-- Gráfica de dividendos -->
+    <section class="chart-container fade-in-up">
+      <h2>Historial de Dividendos Diarios</h2>
+      <canvas id="bnbChart" width="600" height="300"></canvas>
+    </section>
+
+    <footer>
+      <p>© 2025 SmartStakingBNB - Todos los derechos reservados</p>
+    </footer>
   </div>
+
+  <script src="app.js"></script>
 </body>
 </html>

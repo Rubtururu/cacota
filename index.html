@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Staking BNB Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header>Smart Staking BNB Dashboard</header>
+
+  <div class="dashboard">
+    <div class="card"><h3>Total BNB Staked</h3><p id="totalStaked">Loading...</p></div>
+    <div class="card"><h3>Dividend Pool</h3><p id="totalTreasury">Loading...</p></div>
+    <div class="card"><h3>Your Staked BNB</h3><p id="userStaked">Loading...</p></div>
+    <div class="card"><h3>Your Pending Rewards</h3><p id="pendingRewards">Loading...</p></div>
+    <div class="card"><h3>Daily Dividend Estimate</h3><p id="dailyEstimate">Loading...</p></div>
+    <div class="card"><h3>Users with Deposits</h3><p id="activeUsers">Loading...</p></div>
+    <div class="card"><h3>Next Reward Distribution</h3><p id="nextDistribution">Loading...</p></div>
+  </div>
+
+  <div class="actions">
+    <input type="number" id="stakeAmount" placeholder="Amount to stake (BNB)" />
+    <br>
+    <button onclick="stakeBNB()">Deposit</button>
+
+    <input type="number" id="withdrawAmount" placeholder="Amount to withdraw (BNB)" />
+    <br>
+    <button onclick="withdrawStake()">Withdraw Stake</button>
+    <button onclick="withdrawRewards()">Claim Rewards</button>
+  </div>
+
+  <div class="dashboard">
+    <div class="card"><h3>Treasury Pool Evolution</h3><canvas id="treasuryChart" height="200"></canvas></div>
+    <div class="card"><h3>Dividend Pool Evolution</h3><canvas id="dividendChart" height="200"></canvas></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

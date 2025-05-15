@@ -1,8 +1,9 @@
-// app.js
+// app.js adaptado al contrato real que me diste
 
-// Dirección del contrato y ABI (simplificada, añadir ABI real)
-const contractAddress = "0x56371bB33b99326F9fF267bEfc1CBaD7849173EE"; 
+const contractAddress = "0x56371bb33b99326f9ff267befc1cbad7849173ee";
+
 const contractABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"address","name":"userAddr","type":"address"}],"name":"getPendingRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"userAddr","type":"address"}],"name":"getTimeUntilNextDistribution","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTotalDailyDividend","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"userAddr","type":"address"}],"name":"getUserDailyDividendEstimate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"userAddr","type":"address"}],"name":"getUserShare","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"hasStaked","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastGlobalUpdate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"stake","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"stakers","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalStaked","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalTreasury","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"users","outputs":[{"internalType":"uint256","name":"stakedAmount","type":"uint256"},{"internalType":"uint256","name":"rewardDebt","type":"uint256"},{"internalType":"uint256","name":"pendingRewards","type":"uint256"},{"internalType":"uint256","name":"lastUpdate","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"withdrawRewards","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"withdrawStake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"stateMutability":"payable","type":"receive"}];
+
 let web3;
 let contract;
 let userAddress;
@@ -11,7 +12,6 @@ const connectWalletBtn = document.getElementById("connectWallet");
 const stakeBtn = document.getElementById("stakeButton");
 const withdrawStakeBtn = document.getElementById("withdrawStakeButton");
 const withdrawRewardsBtn = document.getElementById("withdrawRewardsButton");
-
 const stakeAmountInput = document.getElementById("stakeAmount");
 
 const totalStakedEl = document.getElementById("totalStaked");
@@ -29,252 +29,195 @@ const nextDistributionEl = document.getElementById("nextDistribution");
 let chart;
 const ctx = document.getElementById('bnbChart').getContext('2d');
 
-// Initialize Chart with empty data
 function initChart() {
   chart = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: [], // fechas
+      labels: [],
       datasets: [{
         label: 'Dividendos Diarios (BNB)',
         data: [],
         fill: true,
-        backgroundColor: 'rgba(255, 206, 86, 0.3)',
-        borderColor: 'rgba(255, 206, 86, 1)',
-        borderWidth: 2,
+        backgroundColor: 'rgba(136, 192, 208, 0.3)',
+        borderColor: 'rgba(136, 192, 208, 1)',
+        borderWidth: 3,
         tension: 0.3,
-        pointRadius: 4,
-        pointHoverRadius: 6,
+        pointRadius: 5,
+        pointHoverRadius: 8,
       }]
     },
     options: {
       responsive: true,
-      interaction: {
-        mode: 'nearest',
-        intersect: false
-      },
+      interaction: { mode: 'nearest', intersect: false },
       scales: {
-        x: {
-          title: {
-            display: true,
-            text: 'Fecha'
-          }
-        },
-        y: {
-          title: {
-            display: true,
-            text: 'BNB'
-          },
-          beginAtZero: true
-        }
+        x: { title: { display: true, text: 'Fecha' } },
+        y: { title: { display: true, text: 'BNB' }, beginAtZero: true }
       },
-      plugins: {
-        legend: { display: true, position: 'top' },
-        tooltip: { enabled: true }
-      }
+      plugins: { legend: { display: true, position: 'top' }, tooltip: { enabled: true } }
     }
   });
 }
 
-// Función para actualizar datos en la gráfica (simulada)
 function updateChart() {
-  // Ejemplo: Últimos 7 días con valores aleatorios o fijos, reemplaza con datos reales si tienes
+  // Datos simulados últimos 7 días
   const labels = [];
   const data = [];
   for(let i=6; i>=0; i--) {
     const d = new Date();
     d.setDate(d.getDate() - i);
     labels.push(d.toLocaleDateString());
-    // Datos simulados - reemplaza con lógica real si deseas
-    data.push((Math.random() * 0.1 + 0.02).toFixed(4));
+    data.push((Math.random() * 0.1 + 0.01).toFixed(4));
   }
   chart.data.labels = labels;
   chart.data.datasets[0].data = data;
   chart.update();
 }
 
-// Formatea número BigNumber o string a BNB con 4 decimales
 function formatBNB(value) {
+  if (!value) return "0.0000";
   return Number(web3.utils.fromWei(value.toString(), 'ether')).toFixed(4);
 }
 
-// Formatea porcentaje con 4 decimales
 function formatPercent(value) {
+  if (!value) return "0.0000";
   return (Number(value) * 100).toFixed(4);
 }
 
-// Mostrar error en consola y alert (puedes mejorar)
 function showError(error) {
   console.error(error);
   alert("Error: " + (error.message || error));
 }
 
-// Conectar wallet
 async function connectWallet() {
-  if (window.ethereum) {
+  if(window.ethereum){
     try {
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
       userAddress = accounts[0];
-      connectWalletBtn.textContent = `Conectado: ${userAddress.slice(0,6)}...${userAddress.slice(-4)}`;
+      connectWalletBtn.textContent = "Wallet Conectada";
+      connectWalletBtn.disabled = true;
       contract = new web3.eth.Contract(contractABI, contractAddress);
       refreshAllData();
-      setupEventListeners();
-    } catch (err) {
-      showError(err);
+    } catch(e) {
+      showError(e);
     }
   } else {
-    alert("Por favor instala MetaMask o usa un navegador compatible con Web3.");
+    alert("Necesitas instalar MetaMask para usar esta dApp.");
   }
 }
 
-// Refresca todas las estadísticas (globales y del usuario)
 async function refreshAllData() {
+  if(!contract) return;
   try {
-    // Estadísticas globales
-    const [totalStaked, totalTreasury, totalDailyDividend, stakers] = await Promise.all([
-      contract.methods.totalStaked().call(),
-      contract.methods.totalTreasury().call(),
-      contract.methods.getTotalDailyDividend().call(),
-      contract.methods.stakers().call(),
-    ]);
+    // Global
+    const totalStaked = await contract.methods.totalStaked().call();
+    const totalTreasury = await contract.methods.totalTreasury().call();
+    const totalDailyDividend = await contract.methods.getTotalDailyDividend().call();
+    const stakers = await contract.methods.stakers().call();
 
-    totalStakedEl.textContent = formatBNB(totalStaked) + " BNB";
-    totalTreasuryEl.textContent = formatBNB(totalTreasury) + " BNB";
-    totalDailyDividendEl.textContent = formatBNB(totalDailyDividend) + " BNB";
+    totalStakedEl.textContent = formatBNB(totalStaked);
+    totalTreasuryEl.textContent = formatBNB(totalTreasury);
+    totalDailyDividendEl.textContent = formatBNB(totalDailyDividend);
     totalUsersEl.textContent = stakers.length;
 
-    // Estadísticas usuario
-    if (!userAddress) return;
+    if(userAddress){
+      // User
+      const userShare = await contract.methods.getUserShare(userAddress).call();
+      // Nota: El contrato no expone directamente cuánto BNB stakeó el usuario, se muestra N/A
+      const pendingRewards = await contract.methods.getPendingRewards(userAddress).call();
+      const dailyEstimate = await contract.methods.getUserDailyDividendEstimate(userAddress).call();
+      const timeUntilNextDistribution = await contract.methods.getTimeUntilNextDistribution(userAddress).call();
 
-    const [userShare, pendingRewards, userDailyEstimate, nextDistribution] = await Promise.all([
-      contract.methods.getUserShare(userAddress).call(),
-      contract.methods.getPendingRewards(userAddress).call(),
-      contract.methods.getUserDailyDividendEstimate(userAddress).call(),
-      contract.methods.getTimeUntilNextDistribution(userAddress).call(),
-    ]);
+      userShareEl.textContent = (Number(userShare) / 1e18 * 100).toFixed(4) + " %";
+      userStakedEl.textContent = "N/A";
+      pendingRewardsEl.textContent = formatBNB(pendingRewards);
+      dailyEstimateEl.textContent = formatBNB(dailyEstimate);
 
-    userShareEl.textContent = formatPercent(userShare) + " %";
-    userStakedEl.textContent = formatBNB(BigInt(totalStaked) * BigInt(userShare) / BigInt(1e18)) + " BNB";
-    pendingRewardsEl.textContent = formatBNB(pendingRewards) + " BNB";
-    dailyEstimateEl.textContent = formatBNB(userDailyEstimate) + " BNB";
-
-    // Temporizador para próxima distribución (en segundos)
-    updateNextDistributionTimer(nextDistribution);
-
-  } catch (error) {
-    showError(error);
+      startNextDistributionCountdown(timeUntilNextDistribution);
+    }
+  } catch(err) {
+    showError(err);
   }
 }
 
-// Actualiza el temporizador para la próxima distribución cada segundo
 let timerInterval;
-function updateNextDistributionTimer(seconds) {
+
+function startNextDistributionCountdown(seconds) {
   clearInterval(timerInterval);
-  if (seconds == 0) {
-    nextDistributionEl.textContent = "Disponible ahora";
+  let remaining = Number(seconds);
+  if(remaining <= 0) {
+    nextDistributionEl.textContent = "Distribución en proceso...";
     return;
   }
-
-  let remaining = Number(seconds);
-
-  function update() {
-    if (remaining <= 0) {
-      nextDistributionEl.textContent = "Disponible ahora";
+  function tick() {
+    if(remaining <= 0) {
+      nextDistributionEl.textContent = "Distribución disponible!";
       clearInterval(timerInterval);
-      refreshAllData(); // refresca datos al llegar a 0
+      refreshAllData();
       return;
     }
-    const hrs = Math.floor(remaining / 3600);
-    const mins = Math.floor((remaining % 3600) / 60);
+    const mins = Math.floor(remaining / 60);
     const secs = remaining % 60;
-    nextDistributionEl.textContent = `${hrs}h ${mins}m ${secs}s`;
+    nextDistributionEl.textContent = `${mins}m ${secs}s`;
     remaining--;
   }
-  update();
-  timerInterval = setInterval(update, 1000);
+  tick();
+  timerInterval = setInterval(tick, 1000);
 }
 
-// Stake (depositar BNB)
 async function stake() {
-  if (!userAddress) {
-    alert("Conecta tu wallet primero.");
-    return;
-  }
+  if(!contract || !userAddress) return alert("Conéctate primero.");
   let amount = stakeAmountInput.value;
-  if (!amount || amount <= 0) {
-    alert("Ingresa una cantidad válida para hacer stake.");
-    return;
-  }
+  if(!amount || isNaN(amount) || Number(amount) <= 0) return alert("Ingresa un monto válido.");
+  const valueWei = web3.utils.toWei(amount, 'ether');
+
   try {
-    const valueWei = web3.utils.toWei(amount.toString(), "ether");
     await contract.methods.stake().send({ from: userAddress, value: valueWei });
-    alert(`Has hecho stake de ${amount} BNB correctamente.`);
+    alert("Stake realizado con éxito!");
     stakeAmountInput.value = "";
     refreshAllData();
-  } catch (error) {
-    showError(error);
+  } catch(err) {
+    showError(err);
   }
 }
-
-// Retirar stake
 async function withdrawStake() {
-  if (!userAddress) {
-    alert("Conecta tu wallet primero.");
-    return;
-  }
-  try {
-    await contract.methods.withdrawStake().send({ from: userAddress });
-    alert("Stake retirado correctamente.");
-    refreshAllData();
-  } catch (error) {
-    showError(error);
-  }
+if(!contract || !userAddress) return alert("Conéctate primero.");
+try {
+await contract.methods.withdrawStake().send({ from: userAddress });
+alert("Stake retirado con éxito!");
+refreshAllData();
+} catch(err) {
+showError(err);
+}
 }
 
-// Retirar recompensas
 async function withdrawRewards() {
-  if (!userAddress) {
-    alert("Conecta tu wallet primero.");
-    return;
-  }
-  try {
-    await contract.methods.withdrawRewards().send({ from: userAddress });
-    alert("Recompensas retiradas correctamente.");
-    refreshAllData();
-  } catch (error) {
-    showError(error);
-  }
+if(!contract || !userAddress) return alert("Conéctate primero.");
+try {
+await contract.methods.withdrawRewards().send({ from: userAddress });
+alert("Recompensas retiradas con éxito!");
+refreshAllData();
+} catch(err) {
+showError(err);
+}
 }
 
-// Event listeners para botones
 function setupEventListeners() {
-  stakeBtn.addEventListener("click", stake);
-  withdrawStakeBtn.addEventListener("click", withdrawStake);
-  withdrawRewardsBtn.addEventListener("click", withdrawRewards);
+stakeBtn.onclick = stake;
+withdrawStakeBtn.onclick = withdrawStake;
+withdrawRewardsBtn.onclick = withdrawRewards;
+connectWalletBtn.onclick = connectWallet;
 }
 
-// Detectar cambio de cuenta en MetaMask
-if(window.ethereum) {
-  window.ethereum.on('accountsChanged', function (accounts) {
-    if(accounts.length > 0) {
-      userAddress = accounts[0];
-      connectWalletBtn.textContent = `Conectado: ${userAddress.slice(0,6)}...${userAddress.slice(-4)}`;
-      refreshAllData();
-    } else {
-      userAddress = null;
-      connectWalletBtn.textContent = "Conectar Wallet";
-    }
-  });
+async function main() {
+if(window.ethereum){
+web3 = new Web3(window.ethereum);
+setupEventListeners();
+initChart();
+updateChart();
+setInterval(refreshAllData, 30000); // Refrescar cada 30 segundos
+} else {
+alert("Necesitas instalar MetaMask para usar esta dApp.");
+}
 }
 
-// Inicialización al cargar la página
-window.addEventListener("load", async () => {
-  if(window.ethereum) {
-    web3 = new Web3(window.ethereum);
-    connectWalletBtn.addEventListener("click", connectWallet);
-    initChart();
-    updateChart();
-  } else {
-    alert("Por favor instala MetaMask o usa un navegador compatible con Web3.");
-  }
-});
+main();

@@ -1,58 +1,55 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Smart Staking BNB Dashboard</title>
-  <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Smart Staking BNB</title>
+
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- Web3.js -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <header>
-    <h1>Smart Staking BNB Dashboard</h1>
-  </header>
+    <div class="container">
+        <h1>Smart Staking BNB</h1>
 
-  <main>
-    <section class="stats-section">
-      <h2>Estadísticas Globales</h2>
-      <p>Total Staked: <span id="totalStaked">0</span> BNB</p>
-      <p>Total Treasury: <span id="totalTreasury">0</span> BNB</p>
-      <p>Dividendos Diarios Totales: <span id="totalDividend">0</span> BNB</p>
-      <p>Usuarios Activos: <span id="activeStakers">0</span></p>
-    </section>
+        <div class="stake-section">
+            <input type="number" id="stakeAmount" placeholder="Cantidad en BNB" step="0.001" min="0" />
+            <div class="buttons">
+                <button id="btnStake">Stake</button>
+                <button id="btnWithdrawStake">Retirar Stake</button>
+                <button id="btnWithdrawRewards">Retirar Recompensas</button>
+            </div>
+        </div>
 
-    <section class="chart-section">
-      <h2>Visualización</h2>
-      <canvas id="stakingChart" width="400" height="200"></canvas>
-    </section>
+        <section class="stats global-stats">
+            <h2>Estadísticas Globales</h2>
+            <p><strong>Total Stakeado:</strong> <span id="totalStaked">Cargando...</span></p>
+            <p><strong>Pool Tesoro:</strong> <span id="totalTreasury">Cargando...</span></p>
+            <p><strong>Dividendos Diarios Totales:</strong> <span id="dailyDividend">Cargando...</span></p>
+            <p><strong>Usuarios con Stake:</strong> <span id="activeStakers">Cargando...</span></p>
+        </section>
 
-    <section class="user-section">
-      <h2>Tu Cuenta</h2>
-      <p>Tu Stake: <span id="userStake">0</span> BNB</p>
-      <p>Recompensas Pendientes: <span id="pendingRewards">0</span> BNB</p>
-      <p>Estimación Diaria: <span id="dailyEstimate">0</span> BNB</p>
-      <p>Participación (%): <span id="userShare">0</span></p>
-      <p>Tiempo hasta próxima distribución: <span id="nextDistribution">0</span> segundos</p>
+        <section class="stats user-stats">
+            <h2>Tu Participación</h2>
+            <p><strong>% Participación:</strong> <span id="userShare">Cargando...</span></p>
+            <p><strong>BNB Stakeado:</strong> <span id="userStaked">Cargando...</span></p>
+            <p><strong>Recompensas Pendientes:</strong> <span id="pendingRewards">Cargando...</span></p>
+            <p><strong>Estimado Diario:</strong> <span id="dailyEstimate">Cargando...</span></p>
+            <p><strong>Próxima Distribución en:</strong> <span id="nextDistribution">Cargando...</span></p>
+        </section>
 
-      <div class="actions">
-        <input type="number" id="stakeAmount" placeholder="Cantidad a stakear (BNB)" min="0" step="0.001"/>
-        <button id="btnStake">Stakear</button>
+        <section class="stats chart-section">
+            <h2>Histórico Dividendos Diarios</h2>
+            <canvas id="dividendChart" style="max-width: 600px;"></canvas>
+        </section>
+    </div>
 
-        <input type="number" id="withdrawAmount" placeholder="Cantidad a retirar (BNB)" min="0" step="0.001"/>
-        <button id="btnWithdrawPartial">Retirar Parcial</button>
-
-        <button id="btnWithdraw">Retirar Todo</button>
-        <button id="btnClaimRewards">Reclamar Recompensas</button>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <p>Smart Staking BNB &copy; 2025</p>
-  </footer>
-
-  <!-- Chart.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Tu app.js -->
-  <script src="app.js"></script>
+    <!-- Tu archivo JS -->
+    <script src="app.js"></script>
 </body>
 </html>

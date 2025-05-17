@@ -1,57 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Smart Staking BNB</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="favicon.ico" />
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
 </head>
 <body>
-  <main>
-    <h1>Smart Staking BNB</h1>
-    <button id="connectButton">Connect Wallet</button>
+  <main class="container">
+    <header>
+      <h1>Smart Staking BNB</h1>
+      <button id="connectButton" class="btn">Conectar Wallet</button>
+      <p>Conectado: <span id="walletAddress">-</span></p>
+    </header>
 
-    <!-- GLOBAL STATS -->
     <section class="stats">
-      <h2>📊 Global Statistics</h2>
-      <div id="globalStats" class="stat-block">
-        <p><strong>Total BNB Staked:</strong> <span id="totalStaked">Loading...</span></p>
-        <p><strong>Treasury Pool:</strong> <span id="totalTreasury">Loading...</span></p>
-        <p><strong>Daily Dividend Pool:</strong> <span id="totalDailyDividend">Loading...</span></p>
-        <p><strong>Active Stakers:</strong> <span id="activeStakers">Loading...</span></p>
-      </div>
-      <canvas id="stakingChart" height="100"></canvas>
+      <h2>Estadísticas Globales</h2>
+      <ul>
+        <li>Total Staked: <strong id="totalStaked">-</strong></li>
+        <li>Tesorería: <strong id="totalTreasury">-</strong></li>
+        <li>Dividendo Diario Total: <strong id="dailyDividend">-</strong></li>
+        <li>Usuarios Activos: <strong id="activeStakers">-</strong></li>
+      </ul>
     </section>
 
-    <!-- USER STATS -->
-    <section class="stats">
-      <h2>👤 Your Statistics</h2>
-      <div id="userStats" class="stat-block">
-        <p><strong>Your BNB Staked:</strong> <span id="userStaked">Loading...</span></p>
-        <p><strong>Your Pending Rewards:</strong> <span id="pendingRewards">Loading...</span></p>
-        <p><strong>Estimated Daily Dividend:</strong> <span id="dailyEstimate">Loading...</span></p>
-        <p><strong>Your Share (%):</strong> <span id="userShare">Loading...</span></p>
-        <p><strong>Time Until Next Distribution:</strong> <span id="timeUntilNext">Loading...</span></p>
-      </div>
+    <section class="user-stats">
+      <h2>Tu Participación</h2>
+      <ul>
+        <li>BNB Stakeado: <strong id="userStaked">-</strong></li>
+        <li>Recompensas Pendientes: <strong id="pendingRewards">-</strong></li>
+        <li>Estimado Diario: <strong id="dailyEstimate">-</strong></li>
+        <li>Participación: <strong id="userShare">-</strong></li>
+        <li>Tiempo hasta próxima distribución: <strong id="nextDistribution">-</strong></li>
+      </ul>
     </section>
 
-    <!-- ACTIONS -->
     <section class="actions">
-      <h2>⚙️ Actions</h2>
-      <input type="number" id="stakeAmount" placeholder="Amount in BNB to Stake" />
-      <button onclick="stake()">Stake</button>
+      <h2>Acciones</h2>
 
-      <input type="number" id="withdrawPartialAmount" placeholder="Withdraw Partial BNB" />
-      <button onclick="withdrawPartial()">Withdraw Partial</button>
+      <div class="action-group">
+        <input type="number" id="stakeAmount" placeholder="Cantidad BNB a stakear" />
+        <button id="stakeButton" class="btn">Stake</button>
+      </div>
 
-      <button onclick="withdrawAll()">Withdraw All</button>
-      <button onclick="claimRewards()">Claim Rewards</button>
+      <div class="action-group">
+        <input type="number" id="withdrawAmount" placeholder="Cantidad a retirar (BNB)" />
+        <button id="withdrawPartialButton" class="btn">Retiro Parcial</button>
+      </div>
+
+      <div class="action-group">
+        <button id="withdrawButton" class="btn warning">Retirar Todo</button>
+        <button id="claimButton" class="btn success">Reclamar Recompensas</button>
+      </div>
     </section>
+
+    <footer>
+      <p>&copy; 2025 SmartStakingBNB</p>
+    </footer>
   </main>
 
-  <!-- SCRIPTS -->
-  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

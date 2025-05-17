@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
   <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <div class="app-container">
@@ -52,6 +53,12 @@
           <h3>Stakers Activos</h3>
           <p id="activeStakers">-</p>
         </div>
+      </section>
+
+      <!-- Gráfico -->
+      <section class="card chart-card">
+        <h2>Histórico del Pool de Dividendos</h2>
+        <canvas id="dividendChart"></canvas>
       </section>
     </main>
 

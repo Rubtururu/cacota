@@ -17,6 +17,15 @@ async function connectWallet() {
       document.getElementById('walletAddress').textContent = userAddress;
       await loadAllStats();
       await loadUserStats();
+
+      // Recarga automática cada 30 segundos
+      setInterval(() => {
+        if (userAddress && contract) {
+          loadAllStats();
+          loadUserStats();
+        }
+      }, 30000);
+
     } catch (error) {
       console.error('Error connecting wallet:', error);
       alert('Error conectando wallet');
@@ -94,26 +103,8 @@ async function withdrawStake() {
 }
 
 async function withdrawPartialStake() {
-  const amount = document.getElementById('withdrawAmount').value;
-  if (!amount || isNaN(amount) || Number(amount) <= 0) {
-    alert('Introduce una cantidad válida para retirar');
-    return;
-  }
-  try {
-    const value = web3.utils.toWei(amount, 'ether');
-    await contract.methods.withdrawPartialStake(value).send({ from: userAddress });
-    alert('Retiro parcial realizado con éxito');
-    await loadAllStats();
-    await loadUserStats();
-  } catch (error) {
-    console.error('Partial withdraw failed:', error);
-    alert('Error al retirar parcialmente');
-  }
-}
-
-async function withdrawPartialStake() {
-  const amount = document.getElementById("withdrawPartialAmount").value;
-  if (!amount || parseFloat(amount) <= 0) {
+  const amount = document.getElementById("withdrawAmount").value;
+  if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
     alert("Ingresa una cantidad válida para retirar.");
     return;
   }
@@ -121,17 +112,16 @@ async function withdrawPartialStake() {
   const amountInWei = web3.utils.toWei(amount, "ether");
 
   try {
-    await contract.methods.withdrawPartialStake(amountInWei).send({ from: currentAccount });
+    await contract.methods.withdrawPartialStake(amountInWei).send({ from: userAddress });
     alert("Retiro parcial realizado con éxito.");
-    await updateStats(); // recargar métricas
+    await loadAllStats();
+    await loadUserStats();
   } catch (error) {
-    console.error(error);
+    console.error("Error al realizar el retiro parcial:", error);
     alert("Error al realizar el retiro parcial:\n" + (error.message || error));
   }
 }
 
-
-// Este bloque se debe llamar después de que el HTML esté cargado completamente
 window.addEventListener('DOMContentLoaded', () => {
   const ctx = document.getElementById('dividendChart')?.getContext('2d');
   if (ctx) {

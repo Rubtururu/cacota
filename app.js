@@ -5,8 +5,6 @@ let web3;
 let contract;
 let userAddress;
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 async function connectWallet() {
   if (window.ethereum) {
     try {

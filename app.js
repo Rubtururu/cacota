@@ -130,6 +130,31 @@ async function withdrawRewards() {
   }
 }
 
+const ctx = document.getElementById('dividendChart').getContext('2d');
+const chart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: ["Día 1", "Día 2", "Día 3", "Día 4", "Hoy"],
+    datasets: [{
+      label: 'Pool de Dividendos (BNB)',
+      data: [1.5, 2.0, 2.8, 3.2, 4.0], // reemplaza con datos reales
+      borderColor: '#00bfa6',
+      backgroundColor: 'rgba(0, 191, 166, 0.2)',
+      fill: true,
+      tension: 0.4,
+      pointRadius: 4,
+      pointHoverRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: { beginAtZero: true }
+    }
+  }
+});
+
+
 
 
 

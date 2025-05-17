@@ -28,74 +28,24 @@ async function connectWallet() {
 
 async function loadAllStats() {
   try {
-    const accounts = await web3.eth.getAccounts();
-    const user = accounts[0];
-
-    const stats = await contract.methods.getAllStats().call({ from: user });
-
-    document.getElementById("totalStaked").textContent = `${web3.utils.fromWei(stats._totalStaked, 'ether')} BNB`;
-    document.getElementById("treasury").textContent = `${web3.utils.fromWei(stats._treasury, 'ether')} BNB`;
-    document.getElementById("userStake").textContent = `${web3.utils.fromWei(stats._userStake, 'ether')} BNB`;
-    document.getElementById("pendingRewards").textContent = `${web3.utils.fromWei(stats._pendingRewards, 'ether')} BNB`;
-    document.getElementById("dailyDividend").textContent = `${web3.utils.fromWei(stats._dailyDividend, 'ether')} BNB`;
-    document.getElementById("userDailyDividend").textContent = `${web3.utils.fromWei(stats._userDailyDividend, 'ether')} BNB`;
-    document.getElementById("userShare").textContent = `${stats._userShare} %`;
-    document.getElementById("totalUsers").textContent = stats._totalUsers;
-
-    const seconds = parseInt(stats._nextDistribution, 10);
-    const countdownText = seconds > 0 ? `${Math.floor(seconds / 3600)}h ${Math.floor((seconds % 3600) / 60)}m ${seconds % 60}s` : "Distribuyendo...";
-    document.getElementById("nextDistribution").textContent = countdownText;
-
-    // Guardar el valor real del pool de dividendos en el historial y actualizar la gráfica
-    const dailyBNB = parseFloat(web3.utils.fromWei(stats._dailyDividend, 'ether'));
-    saveDividendHistory(dailyBNB);
-    updateChartWithHistory();
-
+    const stats = await contract.methods.getAllStats().call();
+    document.getElementById('totalStaked').textContent = web3.utils.fromWei(stats._totalStaked, 'ether');
+    document.getElementById('totalTreasury').textContent = web3.utils.fromWei(stats._totalTreasury, 'ether');
+    document.getElementById('dailyDividend').textContent = web3.utils.fromWei(stats._dailyDividend, 'ether');
+    document.getElementById('activeStakers').textContent = stats._activeStakers;
   } catch (error) {
-    console.error("Error al cargar estadísticas:", error);
+    console.error('Error loading stats:', error);
   }
 }
-
-function saveDividendHistory(value) {
-  let history = JSON.parse(localStorage.getItem('dividendHistory')) || [];
-  const today = new Date().toDateString();
-
-  // Evita guardar más de un valor por día
-  if (!history.some(entry => entry.date === today)) {
-    history.push({ date: today, value });
-    if (history.length > 5) history.shift(); // Solo guarda los últimos 5 días
-    localStorage.setItem('dividendHistory', JSON.stringify(history));
-  }
-}
-
-function getDividendHistory() {
-  const history = JSON.parse(localStorage.getItem('dividendHistory')) || [];
-  return history.map(entry => entry.value);
-}
-
-function updateChartWithHistory() {
-  const history = JSON.parse(localStorage.getItem('dividendHistory')) || [];
-  const labels = history.map((entry, i) => `Día ${i + 1}`);
-  const values = history.map(entry => entry.value);
-
-  chart.data.labels = labels;
-  chart.data.datasets[0].data = values;
-  chart.update();
-}
-
 
 async function loadUserStats() {
   try {
     const stats = await contract.methods.getUserStats(userAddress).call();
-
     const stakedBNB = web3.utils.fromWei(stats.stakedAmount, 'ether');
     const pendingRewardsBNB = web3.utils.fromWei(stats.pendingRewards, 'ether');
     const dailyEstimateBNB = web3.utils.fromWei(stats.dailyEstimate, 'ether');
-
-    // Corregimos porcentaje de participación (userShare viene en formato 1e18)
     const userSharePercent = (parseFloat(stats.userShare) / 1e16).toFixed(2) + ' %';
 
-    // Cuenta atrás en segundos, formateada a hh:mm:ss
     const nextDistSeconds = parseInt(stats.nextDistributionIn);
     const hours = Math.floor(nextDistSeconds / 3600);
     const minutes = Math.floor((nextDistSeconds % 3600) / 60);
@@ -173,46 +123,31 @@ async function withdrawRewards() {
   }
 }
 
-const ctx = document.getElementById('dividendChart').getContext('2d');
-const chart = new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: [], // Se llenará dinámicamente
-    datasets: [{
-      label: 'Pool de Dividendos (BNB)',
-      data: [],
-      borderColor: 'rgba(75, 192, 192, 1)',
-      backgroundColor: 'rgba(75, 192, 192, 0.2)',
-      tension: 0.3,
-      fill: true,
-      pointRadius: 4,
-      pointHoverRadius: 6,
-    }]
-  },
-  options: {
-    responsive: true,
-    scales: {
-      y: {
-        beginAtZero: true,
-        title: {
-          display: true,
-          text: 'BNB'
-        }
+// Este bloque se debe llamar después de que el HTML esté cargado completamente
+window.addEventListener('DOMContentLoaded', () => {
+  const ctx = document.getElementById('dividendChart')?.getContext('2d');
+  if (ctx) {
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ["Día 1", "Día 2", "Día 3", "Día 4", "Hoy"],
+        datasets: [{
+          label: 'Pool de Dividendos (BNB)',
+          data: [1.5, 2.0, 2.8, 3.2, 4.0],
+          borderColor: '#00bfa6',
+          backgroundColor: 'rgba(0, 191, 166, 0.2)',
+          fill: true,
+          tension: 0.4,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+        }]
       },
-      x: {
-        title: {
-          display: true,
-          text: 'Últimos días'
+      options: {
+        responsive: true,
+        scales: {
+          y: { beginAtZero: true }
         }
       }
-    }
+    });
   }
 });
-
-
-
-
-
-
-// Si quieres, agrega eventos para refrescar estadísticas automáticamente cada X segundos
-// o añade más funciones según tu necesidad

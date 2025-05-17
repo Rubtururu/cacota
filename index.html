@@ -11,22 +11,37 @@
     <h1>Smart Staking BNB</h1>
     <button id="connectButton">Connect Wallet</button>
 
+    <!-- GLOBAL STATS -->
     <section class="stats">
-      <h2>Global Stats</h2>
-      <div id="globalStats" class="stat-block"></div>
+      <h2>📊 Global Statistics</h2>
+      <div id="globalStats" class="stat-block">
+        <p><strong>Total BNB Staked:</strong> <span id="totalStaked">Loading...</span></p>
+        <p><strong>Treasury Pool:</strong> <span id="totalTreasury">Loading...</span></p>
+        <p><strong>Daily Dividend Pool:</strong> <span id="totalDailyDividend">Loading...</span></p>
+        <p><strong>Active Stakers:</strong> <span id="activeStakers">Loading...</span></p>
+      </div>
+      <canvas id="stakingChart" height="100"></canvas>
     </section>
 
+    <!-- USER STATS -->
     <section class="stats">
-      <h2>Your Stats</h2>
-      <div id="userStats" class="stat-block"></div>
+      <h2>👤 Your Statistics</h2>
+      <div id="userStats" class="stat-block">
+        <p><strong>Your BNB Staked:</strong> <span id="userStaked">Loading...</span></p>
+        <p><strong>Your Pending Rewards:</strong> <span id="pendingRewards">Loading...</span></p>
+        <p><strong>Estimated Daily Dividend:</strong> <span id="dailyEstimate">Loading...</span></p>
+        <p><strong>Your Share (%):</strong> <span id="userShare">Loading...</span></p>
+        <p><strong>Time Until Next Distribution:</strong> <span id="timeUntilNext">Loading...</span></p>
+      </div>
     </section>
 
+    <!-- ACTIONS -->
     <section class="actions">
-      <h2>Actions</h2>
-      <input type="number" id="stakeAmount" placeholder="Amount in BNB" />
+      <h2>⚙️ Actions</h2>
+      <input type="number" id="stakeAmount" placeholder="Amount in BNB to Stake" />
       <button onclick="stake()">Stake</button>
 
-      <input type="number" id="withdrawPartialAmount" placeholder="Withdraw Partial" />
+      <input type="number" id="withdrawPartialAmount" placeholder="Withdraw Partial BNB" />
       <button onclick="withdrawPartial()">Withdraw Partial</button>
 
       <button onclick="withdrawAll()">Withdraw All</button>
@@ -34,7 +49,9 @@
     </section>
   </main>
 
+  <!-- SCRIPTS -->
   <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

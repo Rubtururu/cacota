@@ -5,15 +5,15 @@
   --primary: #00bfa6;
   --secondary: #0f172a;
   --accent: #3b82f6;
-  --light-bg: #f1f5f9;
-  --dark-bg: #1e293b;
-  --card-bg-light: rgba(255, 255, 255, 0.8);
-  --card-bg-dark: rgba(30, 41, 59, 0.7);
+  --light-bg: #f8fafc;
+  --dark-bg: #0f172a;
   --text-light: #1e293b;
   --text-dark: #f1f5f9;
-  --border-radius: 1rem;
-  --glass-blur: 10px;
-  --transition: all 0.3s ease;
+  --card-light: rgba(255, 255, 255, 0.75);
+  --card-dark: rgba(17, 24, 39, 0.75);
+  --border-radius: 1.25rem;
+  --blur: 12px;
+  --transition: all 0.3s ease-in-out;
 }
 
 * {
@@ -24,33 +24,35 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  padding: 2rem;
-  background: linear-gradient(135deg, #1e3a8a, #0f766e);
+  background: linear-gradient(120deg, #0f172a, #0e7490);
   color: var(--text-light);
+  padding: 2rem;
   transition: var(--transition);
   background-attachment: fixed;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 @media (prefers-color-scheme: dark) {
   body {
-    background: linear-gradient(135deg, #0f172a, #064e3b);
+    background: linear-gradient(120deg, #0f172a, #0e7490);
     color: var(--text-dark);
   }
 
-  .stat-card, .action-group, header, .toast {
-    background: var(--card-bg-dark);
+  .card, header, .action-group, .toast {
+    background-color: var(--card-dark);
     color: var(--text-dark);
   }
 
   input, button {
-    background-color: #334155;
-    color: white;
+    background-color: #1f2937;
+    color: #f9fafb;
   }
 }
 
 @media (prefers-color-scheme: light) {
-  .stat-card, .action-group, header, .toast {
-    background: var(--card-bg-light);
+  .card, header, .action-group, .toast {
+    background-color: var(--card-light);
     color: var(--text-light);
   }
 
@@ -60,9 +62,13 @@ body {
   }
 }
 
+/* Containers */
 .container {
-  max-width: 1300px;
+  max-width: 1280px;
   margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
   animation: fadeIn 1s ease-in-out both;
 }
 
@@ -70,40 +76,43 @@ body {
 header {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
   padding: 1.5rem;
   border-radius: var(--border-radius);
-  margin-bottom: 2rem;
-  backdrop-filter: blur(var(--glass-blur));
-  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  backdrop-filter: blur(var(--blur));
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  gap: 1rem;
+  position: relative;
 }
 
 header h1 {
-  font-size: 2.5rem;
+  font-size: 2.75rem;
   font-weight: 700;
   color: var(--primary);
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
 header h1::before {
-  content: '\eb23'; /* Wallet icon from Lucide */
+  content: '\eb23';
   font-family: 'Lucide Icons';
-  font-size: 1.5rem;
+  font-size: 1.75rem;
 }
 
+/* Connect Button */
 #connectBtn {
-  padding: 0.6rem 1.2rem;
-  border-radius: 10px;
-  background-color: var(--accent);
+  align-self: start;
+  padding: 0.8rem 1.6rem;
+  background: var(--accent);
   color: white;
-  font-weight: 600;
   border: none;
+  border-radius: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
   transition: var(--transition);
 }
 
@@ -112,137 +121,169 @@ header h1::before {
   transform: scale(1.05);
 }
 
-/* Secciones */
-section {
-  margin-bottom: 3rem;
-  animation: fadeIn 0.6s ease-in-out both;
-}
-
+/* Section Titles */
 section h2 {
-  margin-bottom: 1.5rem;
-  font-size: 1.6rem;
-  border-left: 4px solid var(--primary);
-  padding-left: 0.75rem;
-}
-
-/* Cards */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
-}
-
-.stat-card {
-  padding: 1.2rem;
-  border-radius: var(--border-radius);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-  backdrop-filter: blur(var(--glass-blur));
-  transition: var(--transition);
-  border: 1px solid rgba(255,255,255,0.15);
-}
-
-.stat-card:hover {
-  transform: translateY(-5px);
-}
-
-.stat-card h3 {
-  font-size: 1rem;
-  color: var(--accent);
-  margin-bottom: 0.5rem;
-}
-
-.stat-card p {
-  font-size: 1.25rem;
+  font-size: 1.8rem;
   font-weight: 600;
-  color: var(--primary);
+  color: var(--accent);
+  margin-bottom: 1.2rem;
+  border-left: 5px solid var(--primary);
+  padding-left: 1rem;
 }
 
-/* Acciones */
-.actions-section .action-group {
-  margin-bottom: 1.5rem;
+/* Card Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+}
+
+.card {
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  backdrop-filter: blur(var(--blur));
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: var(--transition);
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
-  padding: 1.2rem;
-  border-radius: var(--border-radius);
-  backdrop-filter: blur(var(--glass-blur));
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  gap: 0.75rem;
 }
 
-input {
-  padding: 0.75rem;
-  font-size: 1rem;
-  border: none;
-  border-radius: 10px;
-  outline: none;
+.card:hover {
+  transform: translateY(-8px);
+}
+
+.card h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.card p {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+/* Action Groups */
+.action-group {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  backdrop-filter: blur(var(--blur));
+  gap: 1rem;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
   transition: var(--transition);
 }
 
-button {
+.action-group input {
   padding: 0.75rem;
+  border-radius: 10px;
+  border: none;
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+.action-group button {
+  padding: 0.75rem;
+  border-radius: 10px;
   font-size: 1rem;
   font-weight: 600;
-  border: none;
-  border-radius: 10px;
   background-color: var(--primary);
   color: white;
+  border: none;
   cursor: pointer;
   transition: var(--transition);
 }
 
-button:hover {
+.action-group button:hover {
   background-color: #019f90;
   transform: scale(1.02);
 }
 
 /* Loader */
 .loader {
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid var(--primary);
+  border: 5px solid #e5e7eb;
+  border-top: 5px solid var(--primary);
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   animation: spin 1s linear infinite;
-  margin: 0 auto;
+  margin: auto;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  to { transform: rotate(360deg); }
 }
 
-/* Toasts */
+/* Toast Notification */
 .toast {
   position: fixed;
   top: 1rem;
   right: 1rem;
   padding: 1rem 1.5rem;
-  border-radius: 10px;
   background-color: var(--primary);
   color: white;
-  font-weight: 600;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  animation: slideIn 0.5s ease-out both;
-  z-index: 1000;
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  animation: slideIn 0.5s ease-out;
+  z-index: 999;
 }
 
 @keyframes slideIn {
-  from { opacity: 0; transform: translateX(100%); }
-  to { opacity: 1; transform: translateX(0); }
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
 }
 
-/* Chart Section */
-#dividendChart {
-  width: 100%;
-  max-height: 300px;
-  margin-top: 2rem;
-  border-radius: var(--border-radius);
-  background-color: rgba(255,255,255,0.05);
+/* Footer */
+footer {
+  text-align: center;
+  margin-top: 4rem;
   padding: 1rem;
+  font-size: 0.875rem;
+  color: #94a3b8;
 }
 
-/* Animaciones */
+/* Utility Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(25px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* Tooltips */
+.tooltip {
+  position: relative;
+  cursor: help;
+}
+
+.tooltip:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1e293b;
+  color: white;
+  padding: 0.5rem;
+  font-size: 0.85rem;
+  border-radius: 0.5rem;
+  white-space: nowrap;
+  z-index: 10;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 2rem;
+  }
+
+  .action-group {
+    padding: 1rem;
+  }
+
+  .card {
+    padding: 1rem;
+  }
 }

@@ -5,6 +5,8 @@ let web3;
 let contract;
 let userAddress;
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 async function connectWallet() {
   if (window.ethereum) {
     try {
@@ -127,6 +129,9 @@ async function withdrawRewards() {
     alert('Error al retirar recompensas');
   }
 }
+
+
+
 
 // Si quieres, agrega eventos para refrescar estadísticas automáticamente cada X segundos
 // o añade más funciones según tu necesidad

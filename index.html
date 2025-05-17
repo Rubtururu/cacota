@@ -1,55 +1,40 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Smart Staking BNB</title>
-
-    <!-- Estilos CSS -->
-    <link rel="stylesheet" href="styles.css" />
-
-    <!-- Web3.js -->
-    <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Staking BNB</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div class="container">
-        <h1>Smart Staking BNB</h1>
+  <main>
+    <h1>Smart Staking BNB</h1>
+    <button id="connectButton">Connect Wallet</button>
 
-        <div class="stake-section">
-            <input type="number" id="stakeAmount" placeholder="Cantidad en BNB" step="0.001" min="0" />
-            <div class="buttons">
-                <button id="btnStake">Stake</button>
-                <button id="btnWithdrawStake">Retirar Stake</button>
-                <button id="btnWithdrawRewards">Retirar Recompensas</button>
-            </div>
-        </div>
+    <section class="stats">
+      <h2>Global Stats</h2>
+      <div id="globalStats" class="stat-block"></div>
+    </section>
 
-        <section class="stats global-stats">
-            <h2>Estadísticas Globales</h2>
-            <p><strong>Total Stakeado:</strong> <span id="totalStaked">Cargando...</span></p>
-            <p><strong>Pool Tesoro:</strong> <span id="totalTreasury">Cargando...</span></p>
-            <p><strong>Dividendos Diarios Totales:</strong> <span id="dailyDividend">Cargando...</span></p>
-            <p><strong>Usuarios con Stake:</strong> <span id="activeStakers">Cargando...</span></p>
-        </section>
+    <section class="stats">
+      <h2>Your Stats</h2>
+      <div id="userStats" class="stat-block"></div>
+    </section>
 
-        <section class="stats user-stats">
-            <h2>Tu Participación</h2>
-            <p><strong>% Participación:</strong> <span id="userShare">Cargando...</span></p>
-            <p><strong>BNB Stakeado:</strong> <span id="userStaked">Cargando...</span></p>
-            <p><strong>Recompensas Pendientes:</strong> <span id="pendingRewards">Cargando...</span></p>
-            <p><strong>Estimado Diario:</strong> <span id="dailyEstimate">Cargando...</span></p>
-            <p><strong>Próxima Distribución en:</strong> <span id="nextDistribution">Cargando...</span></p>
-        </section>
+    <section class="actions">
+      <h2>Actions</h2>
+      <input type="number" id="stakeAmount" placeholder="Amount in BNB" />
+      <button onclick="stake()">Stake</button>
 
-        <section class="stats chart-section">
-            <h2>Histórico Dividendos Diarios</h2>
-            <canvas id="dividendChart" style="max-width: 600px;"></canvas>
-        </section>
-    </div>
+      <input type="number" id="withdrawPartialAmount" placeholder="Withdraw Partial" />
+      <button onclick="withdrawPartial()">Withdraw Partial</button>
 
-    <!-- Tu archivo JS -->
-    <script src="app.js"></script>
+      <button onclick="withdrawAll()">Withdraw All</button>
+      <button onclick="claimRewards()">Claim Rewards</button>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

@@ -111,17 +111,25 @@ async function withdrawPartialStake() {
   }
 }
 
-async function withdrawRewards() {
+async function withdrawPartialStake() {
+  const amount = document.getElementById("withdrawPartialAmount").value;
+  if (!amount || parseFloat(amount) <= 0) {
+    alert("Ingresa una cantidad válida para retirar.");
+    return;
+  }
+
+  const amountInWei = web3.utils.toWei(amount, "ether");
+
   try {
-    await contract.methods.withdrawRewards().send({ from: userAddress });
-    alert('Recompensas retiradas con éxito');
-    await loadAllStats();
-    await loadUserStats();
+    await contract.methods.withdrawPartialStake(amountInWei).send({ from: currentAccount });
+    alert("Retiro parcial realizado con éxito.");
+    await updateStats(); // recargar métricas
   } catch (error) {
-    console.error('Withdraw rewards failed:', error);
-    alert('Error al retirar recompensas');
+    console.error(error);
+    alert("Error al realizar el retiro parcial:\n" + (error.message || error));
   }
 }
+
 
 // Este bloque se debe llamar después de que el HTML esté cargado completamente
 window.addEventListener('DOMContentLoaded', () => {

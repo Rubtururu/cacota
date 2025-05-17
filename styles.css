@@ -96,6 +96,7 @@ header h1 {
   font-size: 1.25rem;
   font-weight: bold;
   color: #f1f5f9;
+  animation: fadeInUp 1s ease;
 }
 
 /* === Botones === */
@@ -140,6 +141,17 @@ input[type="number"] {
   from {
     opacity: 0;
     transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
   }
   to {
     opacity: 1;

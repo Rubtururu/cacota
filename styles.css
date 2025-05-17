@@ -1,6 +1,57 @@
-/* === Fuente y resets === */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+/* Fuente moderna y base */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
+:root {
+  --primary: #00bfa6;
+  --secondary: #0f172a;
+  --accent: #3b82f6;
+  --light-bg: #f1f5f9;
+  --dark-bg: #1e293b;
+  --card-bg-light: rgba(255, 255, 255, 0.8);
+  --card-bg-dark: rgba(30, 41, 59, 0.7);
+  --text-light: #1e293b;
+  --text-dark: #f1f5f9;
+  --border-radius: 1rem;
+  --glass-blur: 10px;
+  --transition: all 0.3s ease;
+}
+
+/* Modo claro / oscuro automático */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--dark-bg);
+    color: var(--text-dark);
+  }
+
+  .stat-card, .action-group, header {
+    background: var(--card-bg-dark);
+    color: var(--text-dark);
+  }
+
+  input, button {
+    background-color: #334155;
+    color: white;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  body {
+    background-color: var(--light-bg);
+    color: var(--text-light);
+  }
+
+  .stat-card, .action-group, header {
+    background: var(--card-bg-light);
+    color: var(--text-light);
+  }
+
+  input, button {
+    background-color: #e2e8f0;
+    color: #1e293b;
+  }
+}
+
+/* Estilos globales */
 * {
   margin: 0;
   padding: 0;
@@ -9,163 +60,159 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background-color: #0f172a;
-  color: #f8fafc;
-  transition: background-color 0.4s ease, color 0.4s ease;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   padding: 2rem;
+  line-height: 1.6;
+  background-size: cover;
+  background-position: center;
+  transition: var(--transition);
 }
 
-/* === Modo claro/oscuro automático === */
-@media (prefers-color-scheme: light) {
-  body {
-    background-color: #f9fafb;
-    color: #1e293b;
-  }
-
-  .card {
-    background-color: #ffffff;
-    color: #1e293b;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-  }
-
-  button {
-    background: #3b82f6;
-    color: white;
-  }
-
-  button:hover {
-    background: #2563eb;
-  }
-}
-
-/* === Contenedor principal === */
 .container {
-  width: 100%;
-  max-width: 960px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Header */
+header {
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-}
-
-/* === Cabecera === */
-header {
-  text-align: center;
+  align-items: flex-start;
+  gap: 1rem;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  backdrop-filter: blur(var(--glass-blur));
+  transition: var(--transition);
 }
 
 header h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-  color: #3b82f6;
-  animation: fadeInDown 1s ease;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--primary);
 }
 
-/* === Tarjetas de estadísticas === */
+#connectBtn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--accent);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+#connectBtn:hover {
+  background-color: #2563eb;
+}
+
+/* Secciones */
+section {
+  margin-bottom: 3rem;
+}
+
+section h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.6rem;
+  border-left: 4px solid var(--primary);
+  padding-left: 0.75rem;
+}
+
+/* Stats Grid */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.5rem;
 }
 
-.card {
-  background-color: #1e293b;
-  border-radius: 16px;
-  padding: 1.5rem;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  position: relative;
-  overflow: hidden;
+.stat-card {
+  padding: 1.2rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  backdrop-filter: blur(var(--glass-blur));
+  transition: var(--transition);
+  border: 1px solid rgba(255,255,255,0.15);
 }
 
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+.stat-card h3 {
+  font-size: 1rem;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
 }
 
-.card h3 {
+.stat-card p {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* Acciones */
+.actions-section .action-group {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 1.2rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  backdrop-filter: blur(var(--glass-blur));
+}
+
+.actions-section input {
+  padding: 0.7rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  transition: var(--transition);
+}
+
+.actions-section button {
+  padding: 0.7rem;
   font-size: 1rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #94a3b8;
-}
-
-.card p {
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: #f1f5f9;
-  animation: fadeInUp 1s ease;
-}
-
-/* === Botones === */
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-  margin-top: 2rem;
-}
-
-button {
-  background: #3b82f6;
   border: none;
-  padding: 0.75rem 1.5rem;
   border-radius: 10px;
-  font-weight: bold;
-  font-size: 1rem;
-  color: #fff;
+  background-color: var(--primary);
+  color: white;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: var(--transition);
 }
 
-button:hover {
-  background: #2563eb;
-  transform: scale(1.05);
+.actions-section button:hover {
+  background-color: #019f90;
+  transform: scale(1.02);
 }
 
-/* === Input === */
-input[type="number"] {
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  border: none;
-  outline: none;
-  font-size: 1rem;
-  width: 100%;
-  max-width: 200px;
+/* Responsive */
+@media (max-width: 768px) {
+  header {
+    align-items: center;
+    text-align: center;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .action-group {
+    align-items: stretch;
+  }
 }
 
-/* === Animaciones === */
-@keyframes fadeInDown {
+/* Animación de carga (para aplicar si quieres en JS) */
+.fade-in {
+  animation: fadeIn 0.6s ease-in-out both;
+}
+
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(-16px);
+    transform: translateY(15px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* === Responsividad extra === */
-@media (max-width: 480px) {
-  header h1 {
-    font-size: 2rem;
-  }
-
-  button {
-    width: 100%;
   }
 }

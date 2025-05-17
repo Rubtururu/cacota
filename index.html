@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Smart Staking BNB Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Smart Staking BNB</h1>
+      <button id="connectBtn" onclick="connectWallet()">Conectar Wallet</button>
+      <p>Wallet conectado: <span id="walletAddress">No conectado</span></p>
+    </header>
+
+    <section class="stats-section">
+      <h2>Estadísticas Globales</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>Total Staked</h3>
+          <p><span id="totalStaked">-</span> BNB</p>
+        </div>
+        <div class="stat-card">
+          <h3>Pool Tesoro</h3>
+          <p><span id="totalTreasury">-</span> BNB</p>
+        </div>
+        <div class="stat-card">
+          <h3>Dividendos Diarios Totales</h3>
+          <p><span id="dailyDividend">-</span> BNB</p>
+        </div>
+        <div class="stat-card">
+          <h3>Usuarios Activos</h3>
+          <p><span id="activeStakers">-</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="user-stats-section">
+      <h2>Estadísticas del Usuario</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>BNB Apostados</h3>
+          <p><span id="userStaked">-</span> BNB</p>
+        </div>
+        <div class="stat-card">
+          <h3>Recompensas Pendientes</h3>
+          <p><span id="userPendingRewards">-</span> BNB</p>
+        </div>
+        <div class="stat-card">
+          <h3>Estimado Diario</h3>
+          <p><span id="userDailyEstimate">-</span> BNB</p>
+        </div>
+        <div class="stat-card">
+          <h3>% Participación</h3>
+          <p><span id="userShare">-</span></p>
+        </div>
+        <div class="stat-card">
+          <h3>Próxima Distribución</h3>
+          <p><span id="userNextDistribution">-</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="actions-section">
+      <h2>Acciones</h2>
+      <div class="action-group">
+        <input id="stakeAmount" type="number" step="0.0001" placeholder="Cantidad para apostar (BNB)" />
+        <button onclick="stake()">Apostar</button>
+      </div>
+
+      <div class="action-group">
+        <button onclick="withdrawStake()">Retirar Todo el Stake</button>
+      </div>
+
+      <div class="action-group">
+        <input id="withdrawPartialAmount" type="number" step="0.0001" placeholder="Cantidad para retirar (BNB)" />
+        <button onclick="withdrawPartialStake()">Retiro Parcial</button>
+      </div>
+
+      <div class="action-group">
+        <button onclick="withdrawRewards()">Reclamar Recompensas</button>
+      </div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

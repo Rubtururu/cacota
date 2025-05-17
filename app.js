@@ -56,6 +56,33 @@ async function loadAllStats() {
   }
 }
 
+function saveDividendHistory(value) {
+  let history = JSON.parse(localStorage.getItem('dividendHistory')) || [];
+  const today = new Date().toDateString();
+
+  // Evita guardar más de un valor por día
+  if (!history.some(entry => entry.date === today)) {
+    history.push({ date: today, value });
+    if (history.length > 5) history.shift(); // Solo guarda los últimos 5 días
+    localStorage.setItem('dividendHistory', JSON.stringify(history));
+  }
+}
+
+function getDividendHistory() {
+  const history = JSON.parse(localStorage.getItem('dividendHistory')) || [];
+  return history.map(entry => entry.value);
+}
+
+function updateChartWithHistory() {
+  const history = JSON.parse(localStorage.getItem('dividendHistory')) || [];
+  const labels = history.map((entry, i) => `Día ${i + 1}`);
+  const values = history.map(entry => entry.value);
+
+  chart.data.labels = labels;
+  chart.data.datasets[0].data = values;
+  chart.update();
+}
+
 
 async function loadUserStats() {
   try {

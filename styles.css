@@ -96,7 +96,7 @@ header h1 {
   font-size: 1.25rem;
   font-weight: bold;
   color: #f1f5f9;
-  animation: fadeInUp 1s ease;
+  animation: fadeIn 1.5s ease;
 }
 
 /* === Botones === */
@@ -136,6 +136,21 @@ input[type="number"] {
   max-width: 200px;
 }
 
+/* === Gráfico === */
+.chart-container {
+  margin-top: 2rem;
+  background: #1e293b;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  overflow-x: auto;
+}
+
+canvas {
+  width: 100% !important;
+  height: auto !important;
+}
+
 /* === Animaciones === */
 @keyframes fadeInDown {
   from {
@@ -148,14 +163,12 @@ input[type="number"] {
   }
 }
 
-@keyframes fadeInUp {
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(16px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 

@@ -177,14 +177,14 @@ const ctx = document.getElementById('dividendChart').getContext('2d');
 const chart = new Chart(ctx, {
   type: 'line',
   data: {
-    labels: ["Día 1", "Día 2", "Día 3", "Día 4", "Hoy"],
+    labels: [], // Se llenará dinámicamente
     datasets: [{
       label: 'Pool de Dividendos (BNB)',
-      data: [1.5, 2.0, 2.8, 3.2, 4.0], // reemplaza con datos reales
-      borderColor: '#00bfa6',
-      backgroundColor: 'rgba(0, 191, 166, 0.2)',
+      data: [],
+      borderColor: 'rgba(75, 192, 192, 1)',
+      backgroundColor: 'rgba(75, 192, 192, 0.2)',
+      tension: 0.3,
       fill: true,
-      tension: 0.4,
       pointRadius: 4,
       pointHoverRadius: 6,
     }]
@@ -192,10 +192,23 @@ const chart = new Chart(ctx, {
   options: {
     responsive: true,
     scales: {
-      y: { beginAtZero: true }
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'BNB'
+        }
+      },
+      x: {
+        title: {
+          display: true,
+          text: 'Últimos días'
+        }
+      }
     }
   }
 });
+
 
 
 

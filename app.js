@@ -28,16 +28,34 @@ async function connectWallet() {
 
 async function loadAllStats() {
   try {
-    const stats = await contract.methods.getAllStats().call();
+    const accounts = await web3.eth.getAccounts();
+    const user = accounts[0];
 
-    document.getElementById('totalStaked').textContent = web3.utils.fromWei(stats._totalStaked, 'ether');
-    document.getElementById('totalTreasury').textContent = web3.utils.fromWei(stats._totalTreasury, 'ether');
-    document.getElementById('dailyDividend').textContent = web3.utils.fromWei(stats._dailyDividend, 'ether');
-    document.getElementById('activeStakers').textContent = stats._activeStakers;
+    const stats = await contract.methods.getAllStats().call({ from: user });
+
+    document.getElementById("totalStaked").textContent = `${web3.utils.fromWei(stats._totalStaked, 'ether')} BNB`;
+    document.getElementById("treasury").textContent = `${web3.utils.fromWei(stats._treasury, 'ether')} BNB`;
+    document.getElementById("userStake").textContent = `${web3.utils.fromWei(stats._userStake, 'ether')} BNB`;
+    document.getElementById("pendingRewards").textContent = `${web3.utils.fromWei(stats._pendingRewards, 'ether')} BNB`;
+    document.getElementById("dailyDividend").textContent = `${web3.utils.fromWei(stats._dailyDividend, 'ether')} BNB`;
+    document.getElementById("userDailyDividend").textContent = `${web3.utils.fromWei(stats._userDailyDividend, 'ether')} BNB`;
+    document.getElementById("userShare").textContent = `${stats._userShare} %`;
+    document.getElementById("totalUsers").textContent = stats._totalUsers;
+
+    const seconds = parseInt(stats._nextDistribution, 10);
+    const countdownText = seconds > 0 ? `${Math.floor(seconds / 3600)}h ${Math.floor((seconds % 3600) / 60)}m ${seconds % 60}s` : "Distribuyendo...";
+    document.getElementById("nextDistribution").textContent = countdownText;
+
+    // Guardar el valor real del pool de dividendos en el historial y actualizar la gráfica
+    const dailyBNB = parseFloat(web3.utils.fromWei(stats._dailyDividend, 'ether'));
+    saveDividendHistory(dailyBNB);
+    updateChartWithHistory();
+
   } catch (error) {
-    console.error('Error loading stats:', error);
+    console.error("Error al cargar estadísticas:", error);
   }
 }
+
 
 async function loadUserStats() {
   try {
